@@ -1,3 +1,4 @@
+//Generating a random numbers
 function getComputerChoice() {
     let num = Math.random() * 100
     let numRounded = Math.floor(num)
@@ -12,8 +13,7 @@ function getComputerChoice() {
     }
 }
 
-// plays the game
-
+// plays the game function
 function playRound(playerSelection, compSelection) {
     playerSelection.toLowerCase()
     
@@ -60,34 +60,96 @@ function playRound(playerSelection, compSelection) {
     }
 }
 
+// 
+// Finale score calc
+// 
 
-function games() {
-  let playerScore = 0
-  let compScore = 0 
-  
-//loops 
-for (let i = 0; i < 5; i++) { 
-  
-  const playerSelection = prompt('Choose rock, paper or scissors'); //rock repeats 5 times
-  
-  const compSelection = getComputerChoice(); // choice 
-  
-  const result = playRound(playerSelection, compSelection)
-    console.log(result)
+
+let playerScore = 0
+let compScore = 0 
+
+
+//const playerSelection = prompt('Choose rock, paper or scissors'); //rock repeats 5 times  
+function scoreCalc (result) {
+    result.toLowerCase()
+    if ( result.match('win') === null ) {  
+       return compScore++ 
+     } else if (result.match('lose') == null) {           
+        return playerScore++
+     } else if (result.match('draw') !== null) {
+       return console.log('draw')
+     } 
+}
+
+//
+//
+//
+//Dom Manipulation
+//
+//
+//
+
+let playerSelection = '' //player choice
+let compSelection = getComputerChoice(); // choice of computer
+
+const div = document.querySelector('#results') // links the div for results
+
+// event listeners for rock paper scissors
+const rock = document.querySelector('#rock');
+//when rock is clicked, playerSelection is rock, and the compSelection is used, however comPSelection is not repeated. must refresh browser to repeat.
+rock.addEventListener('click', () => {
+    playerSelection = 'rock'
+    compSelection = getComputerChoice();
+    game(playerSelection, compSelection)
+ 
+});
+
+const paper = document.querySelector('#paper');
+paper.addEventListener('click', () => {
+    playerSelection = 'paper'
+    compSelection = getComputerChoice();
+    game(playerSelection, compSelection)
+});
+
+const scissors = document.querySelector('#scissors');
+scissors.addEventListener('click', () => {
+    playerSelection = 'scissors'
+    compSelection = getComputerChoice();
+    game(playerSelection, compSelection)
+});
+
+// 
+// 
+//Games Function 
+// 
+//
+
+
+const player = document.querySelector('#player');
+const comp = document.querySelector('#comp');
+const gameScore = document.querySelector('#gameResult');
+
+function game(playerSelection, compSelection) {
+    let result = playRound(playerSelection, compSelection)
     
-  if ( result.match('win') === null ) {  
-           compScore++ 
-        } else if (result.match('lose') == null) {           
-           playerScore++
-        } else if (result.match('draw') !== null) {
-          console.log('draw')
-        } 
-}
+    // scoreCalc is undefined, becuase there are no outputs remember it is a function
+    let score = scoreCalc(result)
 
-   if (playerScore > compScore) {
-    return console.log('you win, you were lucky this time.')
-  } else if (compScore > playerScore) {
-    return console.log ('you lose mate try better next time')
-  }
 
-}
+    player.innerHTML = 'Player Score: ' + `${playerScore}`;
+    comp.innerHTML = 'Computer Score: ' + `${compScore}`;
+    
+    if (compScore >= 5) {
+        gameScore   .innerHTML = " loser";
+     }
+    else if(playerScore >= 5) {
+        gameScore.innerHTML = " winner";
+    };
+    
+    
+
+    return console.log('round done')
+};
+
+
+
